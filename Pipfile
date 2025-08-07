@@ -4,10 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-openai = "*"
 scikit-learn = "*"
 pandas = "*"
 flask = "*"
+torch = "*"
+torchvision = "*"
+transformers = {extras = ["torch"], version = "*"}
 
 [dev-packages]
 tqdm = "*"
@@ -15,4 +17,4 @@ notebook = "==7.1.2"
 ipywidgets = "*"
 
 [requires]
-python_version = "3.12"
+python_version = "3.13.5"
