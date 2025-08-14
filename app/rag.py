@@ -69,13 +69,24 @@ class RAG:
             add_generation_prompt=True,
             enable_thinking=True # Switches between thinking and non-thinking modes. Default is True.
         )
-        print(text[16:32])
-        text=text[16:32]
         print('text:{}'.format(len(text)))
         model_inputs = self.tokenizer([text], return_tensors="pt").to(self.model.device)
         print('model_inputs:{}'.format(model_inputs['input_ids'].shape))
         print(len(model_inputs.input_ids[0]))
-
+        index_content = self.tokenizer.decode([151667, 151668], skip_special_tokens=True).strip("\n")  
+        print('index_content:{}'.format(index_content))
+        print(self.tokenizer.all_special_tokens)
+        print(self.tokenizer.additional_special_tokens)
+        print('bos_token:{}'.format(self.tokenizer.bos_token))
+        print('eos_token:{}'.format(self.tokenizer.eos_token))
+        print('unk_token:{}'.format(self.tokenizer.unk_token))
+        print('sep_token:{}'.format(self.tokenizer.sep_token))
+        print('pad_token:{}'.format(self.tokenizer.pad_token))
+        print('cls_token:{}'.format(self.tokenizer.cls_token))
+        print('mask_token:{}'.format(self.tokenizer.mask_token))
+       
+ 
+         
         # conduct text completion
         generated_ids = self.model.generate(
             **model_inputs,
@@ -89,11 +100,13 @@ class RAG:
         except ValueError:
             index = 0
         
+    
         thinking_content = self.tokenizer.decode(output_ids[:index], skip_special_tokens=True).strip("\n")
-        print(thinking_content)
         content = self.tokenizer.decode(output_ids[index:], skip_special_tokens=True).strip("\n")    
         
-        return content
+        answer_data ={'think_logic': thinking_content,
+                      'answer':   content, 'pompt_token_size': len(model_inputs.input_ids[0]), 'output': output_ids}
+        return answer_data
     
     def answer(self, query):
         search_results = self.search(query)
@@ -106,4 +119,4 @@ if __name__=='__main__':
     rag = RAG(data_path= '../data/data.csv', model_name = "Qwen/Qwen3-1.7B")
     question = 'Is the Lat Pulldown considered a strength training activity, and if so, why?'
     answer = rag.answer(question)
-    print(answer)
+    print(answer.json())
