@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import minsearch
 from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -23,8 +24,10 @@ muscle_groups_activated: {muscle_groups_activated}
 instructions: {instructions}
 """.strip()
 
+DATA_PATH = os.getenv('DATA_PATH', '../data/data.csv')
+
 class RAG:
-    def __init__(self, data_path= '../data/data.csv', model_name = "Qwen/Qwen3-1.7B")->None:
+    def __init__(self, data_path= DATA_PATH, model_name = "Qwen/Qwen3-1.7B")->None:
 
         self.ingess(data_path)
         # load the tokenizer and the model
