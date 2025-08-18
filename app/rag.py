@@ -25,18 +25,26 @@ instructions: {instructions}
 """.strip()
 
 DATA_PATH = os.getenv("DATA_PATH", "data/data.csv")
-
+MODEL_PATH = os.getenv("MODEL_PATH","model")
 class RAG:
-    def __init__(self, data_path= DATA_PATH, model_name = "Qwen/Qwen3-1.7B")->None:
+#    def __init__(self, data_path= DATA_PATH, model_name = "Qwen/Qwen3-1.7B")->None:
+
+    def __init__(self, data_path= DATA_PATH, model_path = MODEL_PATH)->None:
 
         self.ingess(data_path)
         # load the tokenizer and the model
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_name,
+            model_path,
             torch_dtype="auto",
             device_map="auto"
         )    
+
+#        self.model = AutoModelForCausalLM.from_pretrained(
+#            model_name,
+#            torch_dtype="auto",
+#            device_map="auto"
+#        )    
 
     def ingess(self,data_path)->None:
         df =pd.read_csv(data_path)
