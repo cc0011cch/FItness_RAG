@@ -40,9 +40,13 @@ class RAG:
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_path,
-            torch_dtype="auto",
-            device_map="auto"
-        )    
+            torch_dtype=torch.float16,
+            device_map="auto",
+            trust_remote_code =True,
+            low_cpu_mem_usage=True,
+            offload_folder="offload/"
+        ).eval()
+        self.model.config.use_cache = False    
 
 #        self.model = AutoModelForCausalLM.from_pretrained(
 #            model_name,
