@@ -9,6 +9,7 @@ COPY ["Pipfile", "Pipfile.lock", "./"]
 
 RUN pipenv install --deploy --ignore-pipfile --system
 
+RUN hf download Qwen/Qwen3-1.7B --local-dir ./model/Qwen3-1.7B
 
 COPY app .
 
