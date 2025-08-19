@@ -23,8 +23,11 @@ requests = "*"
 gunicorn = "*"
 torch = {version = "==2.8.0", index = "downloadpytorch"}
 accelerate = "*"
+dotenv = "*"
 
 [dev-packages]
+pathlab = "*"
+huggingface-hub = "*"
 
 [requires]
-python_version = "3.13"
+python_version = "3.12"

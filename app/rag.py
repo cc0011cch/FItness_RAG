@@ -3,6 +3,8 @@ import pandas as pd
 import minsearch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
+from dotenv import load_dotenv
+
 
 prompt_template = """
 You're a fitness insrtuctor. Answer the QUESTION based on the CONTEXT from our exercises database. 
@@ -24,16 +26,18 @@ muscle_groups_activated: {muscle_groups_activated}
 instructions: {instructions}
 """.strip()
 
-DATA_PATH = os.getenv("DATA_PATH", "data/data.csv")
-MODEL_PATH = os.getenv("MODEL_PATH","model")
+DATA_PATH = os.getenv("DATA_PATH", "../data/data.csv")
+MODEL_PATH = os.getenv("MODEL_PATH","../model/Qwen3-1.7B")
 class RAG:
 #    def __init__(self, data_path= DATA_PATH, model_name = "Qwen/Qwen3-1.7B")->None:
 
     def __init__(self, data_path= DATA_PATH, model_path = MODEL_PATH)->None:
 
+        load_dotenv()
+        access_token = os.getenv("HF_ACCESS_TOKENS")
         self.ingess(data_path)
         # load the tokenizer and the model
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_path,
             torch_dtype="auto",
